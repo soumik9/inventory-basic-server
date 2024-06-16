@@ -5,10 +5,7 @@ import { logger } from "../helpers/logger/index.js";
 const connectToDatabase = async () => {
   const uri = `${config.MONGOOSE_URI}/${config.DATABASE_NAME}`;
   try {
-    await mongoose.connect(uri, {
-      // Specify the write concern mode
-      writeConcern: { w: "majority" },
-    });
+    await mongoose.connect(uri, { writeConcern: { w: "majority" } });
     logger.log("info", "Connected to MongoDB using Mongoose!");
   } catch (error) {
     logger.log("error", `Error connecting database: ${error instanceof Error ? error.message : 'unknown'}`);

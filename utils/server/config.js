@@ -1,10 +1,31 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config({ path: path.join(process.cwd(), '.env') });
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+
+// Check required environment variables
+const requiredEnvVars = [
+    'ENV',
+    'PORT',
+    'MONGOOSE_URI',
+    'DATABASE_NAME',
+    'TOKEN_SECRET',
+    'TOKEN_SECRET_EXP',
+    'BCRYPT_SALT_ROUND',
+    'SEED_ADMIN_PHONE',
+    'SEED_ADMIN_PASSWORD',
+    'SEED_ADMIN_ROLE',
+];
+
+requiredEnvVars.forEach((key) => {
+    if (!process.env[key]) {
+        throw new Error(`Missing required environment variable: ${key}`);
+    }
+});
 
 export default {
-    ENV: process.env.NODE_ENV,
+    ENV: process.env.ENV,
     PORT: process.env.PORT,
 
     MONGOOSE_URI: process.env.MONGOOSE_URI,
@@ -13,11 +34,11 @@ export default {
     TOKEN_SECRET: process.env.TOKEN_SECRET,
     TOKEN_SECRET_EXP: process.env.TOKEN_SECRET_EXP,
 
-    BYCRYPT_SALT_ROUND: process.env.BYCRYPT_SALT_ROUND,
+    BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND,
 
-    SENDER_EMAIL_NAME: process.env.SENDER_EMAIL_NAME,
-    SENDER_EMAIL_HOSTNAME: process.env.SENDER_EMAIL_HOSTNAME,
-    SENDER_EMAIL_PORT: process.env.SENDER_EMAIL_PORT,
-    SENDER_EMAIL_ID: process.env.SENDER_EMAIL_ID,
-    SENDER_EMAIL_PASSWORD: process.env.SENDER_EMAIL_PASSWORD,
+    SEEDER: {
+        PHONE: process.env.SEED_ADMIN_PHONE,
+        PASSWORD: process.env.SEED_ADMIN_PASSWORD,
+        ROLE: process.env.SEED_ADMIN_ROLE,
+    },
 };

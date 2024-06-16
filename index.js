@@ -2,6 +2,7 @@ import express from 'express'
 import routes from './app/routers/routes.js';
 import globalErrorHandler from './utils/errors/globalErrorHandler.js';
 import { bootstrap, globalMiddlewares, handleRouteNotFound } from './utils/server/index.js';
+import seedAdmin from './utils/seeders/seedAdmin.js';
 
 const app = express();
 

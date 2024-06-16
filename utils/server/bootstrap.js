@@ -1,6 +1,7 @@
 import connectToDatabase from "./connectToDatabase.js";
 import config from "./config.js";
 import { logger } from "../helpers/logger/index.js";
+import seedAdmin from "../seeders/seedAdmin.js";
 
 // server related works
 process.on('uncaughtException', (error) => {
@@ -14,11 +15,10 @@ const bootstrap = async (app) => {
 
     try {
         // server listen
-        server = app.listen(process.env.PORT, () => {
+        server = app.listen(config.PORT, () => {
             logger.log("info", `Listening on port http://localhost:${config.PORT}/api/sass/v1`);
-
-            // connect database after server started
-            connectToDatabase()
+            connectToDatabase();
+            seedAdmin();
         });
     } catch (error) {
         logger.log("error", `Error creating server: ${error instanceof Error ? error.message : 'unknown'}`);

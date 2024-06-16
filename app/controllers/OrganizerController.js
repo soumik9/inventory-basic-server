@@ -2,7 +2,6 @@ import { Organizer } from "../models/index.js";
 import ApiError from "../../utils/errors/ApiError.js";
 import httpStatus from "http-status";
 import { catchAsync, sendResponse } from "../../utils/helpers/global/index.js";
-import { mailTeamplates, sendMail } from "../../utils/helpers/email/index.js";
 import { pick } from "../../utils/helpers/transforms/index.js";
 import { config } from "../../utils/server/index.js";
 
@@ -21,19 +20,7 @@ const CreateNewOrganizerToSentInviteToAddUnderBusiness = catchAsync(async (req, 
         throw new ApiError(httpStatus.NOT_FOUND, 'Already an employee of a business profile!');
 
     // saving role info
-    const data = await Organizer.create({ ...organizerData });
-
-    if (data._id) {
-        // email template with invitation link
-        const mailTemp = await mailTeamplates.sassInvitationEmailTemp(String(data._id), req);
-
-        // sending invitation
-        await sendMail({
-            email: organizerData.email,
-            subject: String(config.SENDER_EMAIL_ID),
-            content: mailTemp,
-        })
-    }
+    const data = await Organizer.create({ ...organizerData })
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
