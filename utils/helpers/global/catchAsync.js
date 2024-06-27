@@ -1,11 +1,11 @@
-import { logger } from "../logger/index.js";
+import { errorLogger } from "../logger/logger.js";
 
 const catchAsync = (fn) => async (req, res, next) => {
     try {
         await fn(req, res, next);
     } catch (error) {
         next(error);
-        logger.log(error);
+        errorLogger.error(error);
     }
 };
 

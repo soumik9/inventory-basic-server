@@ -3,7 +3,7 @@ import ApiError from "../../utils/errors/ApiError.js";
 import { catchAsync, sendResponse } from "../../utils/helpers/global/index.js";
 import { Customer, CustomerAccount } from "../models/index.js";
 import { startSession } from "mongoose";
-import logger from "../../utils/helpers/logger/logger.js";
+import { errorLogger } from "../../utils/helpers/logger/logger.js";
 
 const CreateCustomer = catchAsync(async (req, res) => {
 
@@ -45,7 +45,7 @@ const CreateCustomer = catchAsync(async (req, res) => {
         await session.abortTransaction();
         await session.endSession();
 
-        logger.log("error", `Transaction error: ${error.message}`);
+        errorLogger.error(`Transaction error: ${error.message}`);
         throw new ApiError(httpStatus.BAD_REQUEST, `Error on creating activity exists! ${error.message}`);
     }
 })
