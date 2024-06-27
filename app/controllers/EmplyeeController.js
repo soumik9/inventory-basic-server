@@ -24,6 +24,23 @@ const CreateEmployee = catchAsync(async (req, res) => {
 
 })
 
+const GetAllCustomers = catchAsync(async (req, res) => {
+
+    const data = await Employee.find().select("-__v");
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Employees retrived successfully!`,
+        meta: {
+            total: data.length,
+        },
+        data,
+    });
+
+})
+
 export default {
     CreateEmployee,
+    GetAllCustomers,
 };
