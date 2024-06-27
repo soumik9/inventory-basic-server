@@ -1,11 +1,41 @@
 import httpStatus from "http-status";
 import ApiError from "../../utils/errors/ApiError.js";
 import { catchAsync, sendResponse } from "../../utils/helpers/global/index.js";
-import { Customer, CustomerAccount, CustomerTransaction, Order } from "../models/index.js";
+import { CustomerAccount, CustomerTransaction, Order } from "../models/index.js";
 import { startSession } from "mongoose";
 import { errorLogger } from "../../utils/helpers/logger/logger.js";
 import { calculateTotal, generateUniqueOrderId } from "../services/OrderService.js";
 import moment from "moment";
+
+const GetAllOrders = catchAsync(async (req, res) => {
+
+    const data = await Order.find().select("-__v -products -updatedAt").sort({ createdAt: -1 });
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Orders retrived successfully!`,
+        meta: {
+            total: data.length,
+        },
+        data,
+    });
+
+})
+
+const GetSingleOrderById = catchAsync(async (req, res) => {
+
+    const { orderId } = req.params;
+    const data = await Order.findById(orderId).select("-__v -updatedAt");
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Order retrived successfully!`,
+        data,
+    });
+
+})
 
 const CreateOrder = catchAsync(async (req, res) => {
 
@@ -76,4 +106,6 @@ const CreateOrder = catchAsync(async (req, res) => {
 
 export default {
     CreateOrder,
+    GetAllOrders,
+    GetSingleOrderById,
 };
