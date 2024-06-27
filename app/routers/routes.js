@@ -1,5 +1,5 @@
 import express from 'express';
-import { AuthRouter, OrganizerRouter } from './index.js';
+import { AuthRouter } from './index.js';
 
 const router = express.Router();
 
@@ -7,10 +7,6 @@ const apiRoutes = [
     {
         path: '/auth',
         route: AuthRouter,
-    },
-    {
-        path: '/organizer',
-        route: OrganizerRouter,
     },
 ];
 

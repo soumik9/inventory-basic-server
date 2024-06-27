@@ -1,6 +1,5 @@
 import httpStatus from "http-status";
 import ApiError from "../../utils/errors/ApiError.js";
-import { Organizer } from "../models/index.js";
 import { catchAsync, sendResponse } from "../../utils/helpers/global/index.js";
 import { compareString } from "../../utils/helpers/bcrypt/index.js";
 import { generateToken } from "../../utils/helpers/jwt/index.js";
@@ -16,14 +15,6 @@ const Signin = catchAsync(async (req, res) => {
     if (!email || !reqPassword)
         throw new ApiError(httpStatus.BAD_REQUEST, 'Data not found!');
 
-    // finding user
-    const findOrgnizer = await Organizer.isOrganizerExistsByEmail(email);
-    if (!findOrgnizer)
-        throw new ApiError(httpStatus.NOT_FOUND, 'You are not a registered user!');
-
-    // checking is organizer accepted invitation
-    if (!findOrgnizer.isEmailVerified)
-        throw new ApiError(httpStatus.NOT_FOUND, 'Accept your invitaion & try again!');
 
     // checking is valid password
     const isValidPassword = await compareString(reqPassword, findOrgnizer.password);
