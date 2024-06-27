@@ -50,6 +50,23 @@ const CreateCustomer = catchAsync(async (req, res) => {
     }
 })
 
+const GetAllCustomers = catchAsync(async (req, res) => {
+
+    const data = await Customer.find().select("-__v");
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Customers retrived successfully!`,
+        meta: {
+            total: data.length,
+        },
+        data,
+    });
+
+})
+
 export default {
     CreateCustomer,
+    GetAllCustomers,
 };

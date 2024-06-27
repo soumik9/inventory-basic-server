@@ -6,6 +6,6 @@ import EmplyeeController from '../controllers/EmplyeeController.js';
 
 //routes
 router.post('/create', auth(), EmplyeeController.CreateEmployee);
-router.get('/all', auth(), EmplyeeController.GetAllCustomers);
+router.get('/all', auth(), EmplyeeController.GetAllEmployees);
 
 export const EmployeeRouter = router;

@@ -24,7 +24,7 @@ const CreateEmployee = catchAsync(async (req, res) => {
 
 })
 
-const GetAllCustomers = catchAsync(async (req, res) => {
+const GetAllEmployees = catchAsync(async (req, res) => {
 
     const data = await Employee.find().select("-__v");
 
@@ -42,5 +42,5 @@ const GetAllCustomers = catchAsync(async (req, res) => {
 
 export default {
     CreateEmployee,
-    GetAllCustomers,
+    GetAllEmployees,
 };
