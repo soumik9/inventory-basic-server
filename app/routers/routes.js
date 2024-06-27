@@ -1,5 +1,5 @@
 import express from 'express';
-import { AdminAuthRouter, CustomerRouter } from './index.js';
+import { AdminAuthRouter, CustomerRouter, EmployeeRouter } from './index.js';
 
 const router = express.Router();
 
@@ -11,6 +11,10 @@ const apiRoutes = [
     {
         path: '/customer',
         route: CustomerRouter,
+    },
+    {
+        path: '/employee',
+        route: EmployeeRouter,
     },
 ];
 

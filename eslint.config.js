@@ -8,5 +8,6 @@ export default {
   ...pluginJs.configs.recommended,
   rules: {
     'no-unused-vars': 'warn',  // Turn off the no-unused-vars rule
+    'no-undef': 'error',
   },
 };
