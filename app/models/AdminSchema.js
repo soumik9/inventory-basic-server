@@ -9,7 +9,7 @@ const AdminSchema = new Schema({
         required: [true, 'Name is required'],
     },
     phone: {
-        type: Number,
+        type: String,
         required: [true, 'Phone number is required'],
     },
     password: {

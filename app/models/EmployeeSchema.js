@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
 import moment from "moment";
-import { hashString } from "../../utils/helpers/bcrypt/index.js";
-import { config } from "../../utils/server/index.js";
 
 const EmployeeSchema = new Schema({
     name: {
@@ -9,16 +7,12 @@ const EmployeeSchema = new Schema({
         required: [true, 'Name is required'],
     },
     phone: {
-        type: Number,
+        type: String,
         required: [true, 'Phone number is required'],
     },
     address: {
-        type: Number,
-        required: [true, 'Phone number is required'],
-    },
-    password: {
         type: String,
-        required: [true, 'Password is required'],
+        required: [true, 'address is required'],
     },
     createdAt: {
         type: Number,
@@ -28,21 +22,6 @@ const EmployeeSchema = new Schema({
         type: Number,
         default: () => moment().unix(),
     },
-});
-
-// create or save works for both
-EmployeeSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) {
-        return next();
-    }
-
-    const password = this.password;
-    const hashedPassword = await hashString(password, Number(config.BCRYPT_SALT_ROUND));
-
-    this.password = hashedPassword;
-    this.confirmPassword = undefined;
-
-    next();
 });
 
 const Employee = model("Employee", EmployeeSchema);
