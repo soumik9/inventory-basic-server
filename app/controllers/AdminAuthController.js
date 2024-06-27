@@ -3,29 +3,26 @@ import ApiError from "../../utils/errors/ApiError.js";
 import { catchAsync, sendResponse } from "../../utils/helpers/global/index.js";
 import { compareString } from "../../utils/helpers/bcrypt/index.js";
 import { generateToken } from "../../utils/helpers/jwt/index.js";
+import { Admin } from "../models/index.js";
 
-// sass signin controller
+// admin signin controller
 const Signin = catchAsync(async (req, res) => {
 
     // parsing data
-    const body = JSON.parse(req.body.data);
-    const { email, password: reqPassword } = body;
+    const body = req.body && req.body.data ? JSON.parse(req.body.data) : {};
 
-    // checking email and password given
-    if (!email || !reqPassword)
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Data not found!');
-
+    // is admin exists
+    const findAdmin = await Admin.findOne({ phone: body.phone }).lean();
+    if (!findAdmin)
+        throw new ApiError(httpStatus.NOT_FOUND, 'You are not authorized.');
 
     // checking is valid password
-    const isValidPassword = await compareString(reqPassword, findOrgnizer.password);
+    const isValidPassword = await compareString(body.password, findAdmin.password);
     if (!isValidPassword)
         throw new ApiError(httpStatus.UNAUTHORIZED, 'Credential mismatch!');
 
     // generating token
-    const token = generateToken(findOrgnizer);
-
-    // user data to send with response
-    const { password, ...pwd } = findOrgnizer;
+    const token = generateToken(findAdmin);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -33,9 +30,9 @@ const Signin = catchAsync(async (req, res) => {
         message: 'Login Success!',
         data: {
             accessToken: token,
-            _id: pwd._id,
-            name: pwd.name,
-            surname: pwd.surname,
+            _id: findAdmin._id,
+            name: findAdmin.name,
+            phone: findAdmin.phone,
         },
     });
 }
@@ -46,7 +43,7 @@ const Profile = catchAsync(
     async (req, res) => {
 
         // finding profile data
-        const data = await Organizer.findById(req.user?._id).select("-password");
+        const data = await Admin.findById(req.user?._id).select("-password");
 
         sendResponse(res, {
             statusCode: httpStatus.OK,

@@ -1,2 +1,2 @@
-export * from './AuthRouter.js';
+export * from './AdminAuthRouter.js';
 export * from './CustomerRouter.js';
