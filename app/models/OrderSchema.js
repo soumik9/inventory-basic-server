@@ -15,6 +15,10 @@ const OrderSchema = new Schema({
         type: String,
         required: [true, 'Order is required'],
     },
+    status: {
+        type: Boolean,
+        default: false,
+    },
     products: [{
         name: {
             type: String,
