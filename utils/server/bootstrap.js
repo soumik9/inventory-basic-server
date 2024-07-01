@@ -15,9 +15,9 @@ const bootstrap = async (app) => {
 
     try {
         // server listen
-        server = app.listen(config.PORT, () => {
+        server = app.listen(config.PORT, async () => {
             infoLogger.info(`Listening on port http://localhost:${config.PORT}/api/sass/v1`);
-            connectToDatabase();
+            await connectToDatabase();
             seedAdmin();
         });
     } catch (error) {
