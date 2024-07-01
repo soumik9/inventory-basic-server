@@ -4,7 +4,6 @@ import { errorLogger, infoLogger } from "../helpers/logger/logger.js";
 
 const connectToDatabase = async () => {
   const uri = `${config.MONGOOSE_URI}/${config.DATABASE_NAME}`;
-  console.log(uri)
   try {
     await mongoose.connect(uri, { writeConcern: { w: "majority" } });
     infoLogger.info("Connected to MongoDB using Mongoose!");
